@@ -6,11 +6,15 @@ import {
 } from "astro:content";
 
 export const getSinglePage = async <C extends CollectionKey>(
-  collectionName: C,
+  collectionName: C
 ): Promise<CollectionEntry<C>[]> => {
   const allPages = await getCollection(collectionName);
-  const removeIndex = allPages.filter((data) => data.id.match(/^(?!-)/));
-  const removeDrafts = removeIndex.filter((data) => !data.data.draft);
+  const removeIndex = allPages.filter((data: { id: string }) =>
+    data.id.match(/^(?!-)/)
+  );
+  const removeDrafts = removeIndex.filter(
+    (data: { data: { draft: any } }) => !data.data.draft
+  );
   return removeDrafts;
 };
 ---
